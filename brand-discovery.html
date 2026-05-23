@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brand Discovery — Let's Build Something</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1612;
+    --paper: #f5f0e8;
+    --cream: #ede7d9;
+    --gold: #c8a96e;
+    --gold-light: #e8d5a8;
+    --rust: #b85c38;
+    --sage: #7a8c6e;
+    --step-active: #1a1612;
+    --step-done: #7a8c6e;
+    --step-pending: #c4b99a;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Mono', monospace;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid var(--gold);
+    position: relative;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: var(--gold-light);
+    opacity: 0.5;
+  }
+
+  .header-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+
+  .header h1 em {
+    font-style: italic;
+    color: var(--rust);
+  }
+
+  .header-sub {
+    margin-top: 1rem;
+    font-size: 0.72rem;
+    color: #8a7d6a;
+    letter-spacing: 0.05em;
+    line-height: 1.8;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ── PROGRESS ── */
+  .progress-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--cream);
+    border-bottom: 1px solid var(--gold-light);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .progress-bar::-webkit-scrollbar { display: none; }
+
+  .step-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .step-pill.done {
+    color: var(--step-done);
+    border-color: var(--sage);
+    background: rgba(122,140,110,0.08);
+  }
+
+  .step-pill.done::before {
+    content: '✓ ';
+  }
+
+  .step-pill.active {
+    color: var(--paper);
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .step-pill.pending {
+    color: var(--step-pending);
+    border-color: var(--cream);
+  }
+
+  .step-sep {
+    color: var(--gold-light);
+    font-size: 0.6rem;
+    flex-shrink: 0;
+  }
+
+  /* ── MAIN ── */
+  .main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    display: none;
+    animation: fadeSlide 0.5s ease forwards;
+  }
+
+  .section.active {
+    display: block;
+  }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-number {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title em { font-style: italic; color: var(--rust); }
+
+  .section-desc {
+    font-size: 0.7rem;
+    color: #8a7d6a;
+    line-height: 1.9;
+    margin-bottom: 2.5rem;
+    max-width: 520px;
+    border-left: 2px solid var(--gold-light);
+    padding-left: 1rem;
+  }
+
+  /* ── FIELDS ── */
+  .field-group {
+    margin-bottom: 2rem;
+  }
+
+  .field-label {
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+    font-weight: 500;
+  }
+
+  .field-hint {
+    font-size: 0.62rem;
+    color: #a09280;
+    display: block;
+    margin-bottom: 0.6rem;
+    font-style: italic;
+    letter-spacing: 0;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  textarea,
+  select {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--gold-light);
+    padding: 0.75rem 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 300;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.3s;
+    -webkit-appearance: none;
+  }
+
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  textarea:focus,
+  select:focus {
+    border-bottom-color: var(--rust);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.6;
+  }
+
+  select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c8a96e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    padding-right: 2rem;
+  }
+
+  /* ── CHIP SELECTS ── */
+  .chip-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+  }
+
+  .chip {
+    display: inline-block;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--gold-light);
+    border-radius: 20px;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    background: transparent;
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .chip:hover {
+    border-color: var(--gold);
+    background: rgba(200,169,110,0.08);
+  }
+
+  .chip.selected {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  /* ── COLOR SWATCHES ── */
+  .swatch-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 0.5rem;
+  }
+
+  .swatch {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid transparent;
+  }
+
+  .swatch:hover { transform: scale(1.12); }
+
+  .swatch.selected {
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--ink);
+  }
+
+  .swatch-label {
+    font-size: 0.58rem;
+    color: #8a7d6a;
+    text-align: center;
+    margin-top: 0.3rem;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .swatch-item { text-align: center; }
+
+  /* ── SCALE ── */
+  .scale-row {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    align-items: center;
+  }
+
+  .scale-label-end {
+    font-size: 0.6rem;
+    color: #8a7d6a;
+    white-space: nowrap;
+    font-style: italic;
+  }
+
+  .scale-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--gold-light);
+    background: transparent;
+    font-size: 0.7rem;
+    font-family: 'DM Mono', monospace;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--ink);
+    flex-shrink: 0;
+  }
+
+  .scale-btn:hover { border-color: var(--gold); background: rgba(200,169,110,0.1); }
+  .scale-btn.selected { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--cream);
+    margin: 2rem 0;
+  }
+
+  /* ── NAVIGATION ── */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--gold-light);
+  }
+
+  .btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.8rem 1.8rem;
+    border: 1.5px solid;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: transparent;
+  }
+
+  .btn-back {
+    border-color: var(--gold-light);
+    color: #8a7d6a;
+  }
+
+  .btn-back:hover {
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+
+  .btn-next {
+    border-color: var(--ink);
+    color: var(--ink);
+    background: transparent;
+  }
+
+  .btn-next:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .btn-submit {
+    border-color: var(--rust);
+    color: var(--rust);
+  }
+
+  .btn-submit:hover {
+    background: var(--rust);
+    color: var(--paper);
+  }
+
+  /* ── SUMMARY ── */
+  .summary-box {
+    background: var(--cream);
+    border: 1px solid var(--gold-light);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.72rem;
+    line-height: 2;
+    white-space: pre-wrap;
+    font-family: 'DM Mono', monospace;
+    color: var(--ink);
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .copy-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--sage);
+    color: var(--sage);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .copy-btn:hover { background: var(--sage); color: var(--paper); }
+
+  .email-note {
+    margin-top: 1.5rem;
+    padding: 1rem 1.2rem;
+    background: rgba(200,169,110,0.08);
+    border-left: 3px solid var(--gold);
+    font-size: 0.68rem;
+    line-height: 1.8;
+    color: #6a5f50;
+  }
+
+  .email-note strong { color: var(--ink); }
+
+  /* ── CONFETTI-LIKE DONE STATE ── */
+  .done-header {
+    text-align: center;
+    padding: 2rem 0;
+  }
+
+  .done-mark {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .required-star { color: var(--rust); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <p class="header-eyebrow">Brand Discovery Brief</p>
+  <h1>Tell us about your <em>vision</em></h1>
+  <p class="header-sub">A focused set of questions to capture your brand's essence — takes about 5 minutes. We'll use your answers to build something extraordinary.</p>
+</div>
+
+<!-- STICKY PROGRESS -->
+<nav class="progress-bar" id="progressBar"></nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- ══ STEP 1: BASICS ══ -->
+  <div class="section active" data-step="0">
+    <p class="section-number">01 / 06 — Foundation</p>
+    <h2 class="section-title">Who <em>are</em> you?</h2>
+    <p class="section-desc">Start with the essentials. We just need to know who we're building for before we dive into the good stuff.</p>
+
+    <div class="field-group">
+      <label class="field-label">Your Name <span class="required-star">*</span></label>
+      <input type="text" id="clientName" placeholder="Full name or company name">
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Email Address <span class="required-star">*</span></label>
+      <input type="email" id="clientEmail" placeholder="where we'll send your brief">
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Business / Project Name <span class="required-star">*</span></label>
+      <input type="text" id="businessName" placeholder="What do you call this thing?">
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">What does your business do?</label>
+      <span class="field-hint">One or two sentences — don't overthink it.</span>
+      <textarea id="businessWhat" placeholder="We help... / We sell... / We create..."></textarea>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Industry / Sector</label>
+      <select id="industry">
+        <option value="">— select one —</option>
+        <option>Fashion & Apparel</option>
+        <option>Beauty & Wellness</option>
+        <option>Food & Beverage</option>
+        <option>Tech / SaaS</option>
+        <option>Creative Agency</option>
+        <option>Consulting / Professional Services</option>
+        <option>Health & Fitness</option>
+        <option>Real Estate</option>
+        <option>Education</option>
+        <option>Non-profit</option>
+        <option>E-commerce / Retail</option>
+        <option>Hospitality / Events</option>
+        <option>Finance</option>
+        <option>Other</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ══ STEP 2: BRAND IDENTITY ══ -->
+  <div class="section" data-step="1">
+    <p class="section-number">02 / 06 — Brand Identity</p>
+    <h2 class="section-title">The soul of your <em>brand</em></h2>
+    <p class="section-desc">This is where personality lives. How do you want people to feel when they encounter your brand?</p>
+
+    <div class="field-group">
+      <label class="field-label">Brand Personality</label>
+      <span class="field-hint">Pick as many as feel right</span>
+      <div class="chip-group" id="brandPersonality">
+        <span class="chip" data-val="Bold & Daring">Bold & Daring</span>
+        <span class="chip" data-val="Refined & Luxurious">Refined & Luxurious</span>
+        <span class="chip" data-val="Warm & Approachable">Warm & Approachable</span>
+        <span class="chip" data-val="Playful & Fun">Playful & Fun</span>
+        <span class="chip" data-val="Minimal & Clean">Minimal & Clean</span>
+        <span class="chip" data-val="Edgy & Rebellious">Edgy & Rebellious</span>
+        <span class="chip" data-val="Trustworthy & Professional">Trustworthy & Professional</span>
+        <span class="chip" data-val="Creative & Artsy">Creative & Artsy</span>
+        <span class="chip" data-val="Earthy & Sustainable">Earthy & Sustainable</span>
+        <span class="chip" data-val="Technical & Precise">Technical & Precise</span>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Core Values</label>
+      <span class="field-hint">What principles guide every decision you make?</span>
+      <textarea id="coreValues" placeholder="e.g. Transparency, innovation, community, sustainability..."></textarea>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Your Brand in 3 Words</label>
+      <span class="field-hint">If your brand were a person, how would you describe them?</span>
+      <input type="text" id="threeWords" placeholder="e.g. Bold, curious, warm">
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">What do you NOT want to be?</label>
+      <span class="field-hint">Equally important — what should your brand never feel like?</span>
+      <textarea id="notWant" placeholder="e.g. Corporate, cold, generic, confusing..."></textarea>
+    </div>
+  </div>
+
+  <!-- ══ STEP 3: AUDIENCE ══ -->
+  <div class="section" data-step="2">
+    <p class="section-number">03 / 06 — Your Audience</p>
+    <h2 class="section-title">Who are you <em>talking to?</em></h2>
+    <p class="section-desc">Understanding your audience shapes everything — tone, visuals, messaging, the works.</p>
+
+    <div class="field-group">
+      <label class="field-label">Describe your ideal client / customer</label>
+      <span class="field-hint">Age, lifestyle, mindset, what keeps them up at night, what they want</span>
+      <textarea id="idealClient" placeholder="My ideal client is someone who..."></textarea>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Market Position</label>
+      <span class="field-hint">Where do you sit in the market?</span>
+      <div class="scale-row">
+        <span class="scale-label-end">Budget-friendly</span>
+        <button class="scale-btn" data-group="position" data-val="1">1</button>
+        <button class="scale-btn" data-group="position" data-val="2">2</button>
+        <button class="scale-btn" data-group="position" data-val="3">3</button>
+        <button class="scale-btn" data-group="position" data-val="4">4</button>
+        <button class="scale-btn" data-group="position" data-val="5">5</button>
+        <span class="scale-label-end">Premium / Luxury</span>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Who are your competitors or brands you admire?</label>
+      <span class="field-hint">Doesn't need to be your exact industry — just brands with energy you respect</span>
+      <textarea id="competitors" placeholder="e.g. We love the minimalism of Muji, the boldness of Nike, the warmth of..."></textarea>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">What's your key differentiator?</label>
+      <span class="field-hint">Why should someone choose you over anyone else?</span>
+      <textarea id="differentiator" placeholder="We're different because..."></textarea>
+    </div>
+  </div>
+
+  <!-- ══ STEP 4: VISUAL DIRECTION ══ -->
+  <div class="section" data-step="3">
+    <p class="section-number">04 / 06 — Visual Direction</p>
+    <h2 class="section-title">How should it <em>look?</em></h2>
+    <p class="section-desc">Color and aesthetic choices communicate subconsciously. Let's make sure your visuals say the right thing.</p>
+
+    <div class="field-group">
+      <label class="field-label">Colour Palette Vibe</label>
+      <span class="field-hint">Select all that resonate</span>
+      <div class="swatch-row" id="colorPalette">
+        <div class="swatch-item">
+          <div class="swatch" data-val="Dark & Moody" style="background: linear-gradient(135deg, #1a1a2e, #16213e);"></div>
+          <p class="swatch-label">Dark & Moody</p>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch" data-val="Clean & White" style="background: linear-gradient(135deg, #f8f8f8, #e8e8e8);border:1px solid #ddd;"></div>
+          <p class="swatch-label">Clean & White</p>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch" data-val="Earth & Organic" style="background: linear-gradient(135deg, #8b6914, #c4a35a, #7a5c3a);"></div>
+          <p class="swatch-label">Earth Tones</p>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch" data-val="Bold & Vivid" style="background: linear-gradient(135deg, #ff006e, #fb5607, #ffbe0b);"></div>
+          <p class="swatch-label">Bold & Vivid</p>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch" data-val="Soft Pastels" style="background: linear-gradient(135deg, #ffd6e0, #c1e1c1, #b8d8f0);"></div>
+          <p class="swatch-label">Soft Pastels</p>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch" data-val="Monochrome" style="background: linear-gradient(135deg, #000, #888, #ddd);"></div>
+          <p class="swatch-label">Monochrome</p>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch" data-val="Green & Nature" style="background: linear-gradient(135deg, #2d5016, #6a994e, #a7c957);"></div>
+          <p class="swatch-label">Nature & Green</p>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch" data-val="Luxury Gold" style="background: linear-gradient(135deg, #1a1208, #c8a96e, #8b6914);"></div>
+          <p class="swatch-label">Luxury Gold</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Specific colours you love (or have already)</label>
+      <input type="text" id="specificColors" placeholder="e.g. Deep navy #1e2d5a, warm terracotta, sage green...">
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Visual Style Direction</label>
+      <span class="field-hint">Pick one or two</span>
+      <div class="chip-group" id="visualStyle">
+        <span class="chip" data-val="Photography-led">Photography-led</span>
+        <span class="chip" data-val="Illustration & Art">Illustration & Art</span>
+        <span class="chip" data-val="Type-forward">Type-forward</span>
+        <span class="chip" data-val="Abstract & Geometric">Abstract & Geometric</span>
+        <span class="chip" data-val="Editorial / Magazine">Editorial / Magazine</span>
+        <span class="chip" data-val="Handcrafted / Organic">Handcrafted / Organic</span>
+        <span class="chip" data-val="Grid-based & Structured">Grid-based & Structured</span>
+        <span class="chip" data-val="Maximalist">Maximalist</span>
+        <span class="chip" data-val="Ultra Minimal">Ultra Minimal</span>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Any visual references or mood boards?</label>
+      <span class="field-hint">Links, Instagram accounts, websites, anything that captures the vibe</span>
+      <textarea id="visualRefs" placeholder="Paste links, describe aesthetics, or reference brands..."></textarea>
+    </div>
+  </div>
+
+  <!-- ══ STEP 5: DELIVERABLES & GOALS ══ -->
+  <div class="section" data-step="4">
+    <p class="section-number">05 / 06 — Goals & Deliverables</p>
+    <h2 class="section-title">What do you <em>need?</em></h2>
+    <p class="section-desc">Let's get specific about what we're actually building and what success looks like.</p>
+
+    <div class="field-group">
+      <label class="field-label">What do you need from us?</label>
+      <span class="field-hint">Select everything that applies</span>
+      <div class="chip-group" id="deliverables">
+        <span class="chip" data-val="Logo & Identity System">Logo & Identity</span>
+        <span class="chip" data-val="Website / Landing Page">Website</span>
+        <span class="chip" data-val="Brand Guidelines">Brand Guidelines</span>
+        <span class="chip" data-val="Social Media Assets">Social Media Assets</span>
+        <span class="chip" data-val="Pitch Deck / Presentations">Pitch Deck</span>
+        <span class="chip" data-val="Packaging Design">Packaging</span>
+        <span class="chip" data-val="Photography Direction">Photography Direction</span>
+        <span class="chip" data-val="Copywriting & Tone of Voice">Copywriting</span>
+        <span class="chip" data-val="Email Templates">Email Templates</span>
+        <span class="chip" data-val="Print / Collateral">Print / Collateral</span>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Timeline</label>
+      <select id="timeline">
+        <option value="">— when do you need this? —</option>
+        <option>ASAP / Urgent (under 2 weeks)</option>
+        <option>1 month</option>
+        <option>2–3 months</option>
+        <option>3–6 months</option>
+        <option>Flexible / Ongoing</option>
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Budget Range</label>
+      <select id="budget">
+        <option value="">— approximate range —</option>
+        <option>Under £1,000</option>
+        <option>£1,000 – £3,000</option>
+        <option>£3,000 – £7,500</option>
+        <option>£7,500 – £15,000</option>
+        <option>£15,000+</option>
+        <option>Let's discuss</option>
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">What does success look like?</label>
+      <span class="field-hint">In 6 months, what would make this project a win for you?</span>
+      <textarea id="successLooks" placeholder="Success means we've..."></textarea>
+    </div>
+  </div>
+
+  <!-- ══ STEP 6: ANYTHING ELSE ══ -->
+  <div class="section" data-step="5">
+    <p class="section-number">06 / 06 — The Rest</p>
+    <h2 class="section-title">Anything else we should <em>know?</em></h2>
+    <p class="section-desc">A space for everything that doesn't fit neatly into a box — and a final check before we send this off.</p>
+
+    <div class="field-group">
+      <label class="field-label">Business Model</label>
+      <span class="field-hint">How do you make money / create value?</span>
+      <div class="chip-group" id="businessModel">
+        <span class="chip" data-val="Product Sales">Product Sales</span>
+        <span class="chip" data-val="Service / Retainer">Service / Retainer</span>
+        <span class="chip" data-val="Subscription">Subscription</span>
+        <span class="chip" data-val="Marketplace">Marketplace</span>
+        <span class="chip" data-val="Community / Membership">Community</span>
+        <span class="chip" data-val="Agency / Consultancy">Agency / Consultancy</span>
+        <span class="chip" data-val="SaaS / Tech Product">SaaS / Tech</span>
+        <span class="chip" data-val="Content / Creator">Content / Creator</span>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Current stage of business</label>
+      <select id="stage">
+        <option value="">— where are you right now? —</option>
+        <option>Idea stage — just getting started</option>
+        <option>Early — some clients / products, need to formalise</option>
+        <option>Growing — established but need to level up brand</option>
+        <option>Scaling — rebranding or expanding</option>
+        <option>Mature — full refresh / evolution</option>
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Anything else we need to know?</label>
+      <span class="field-hint">Constraints, sensitivities, dream clients, bold ideas, anything</span>
+      <textarea id="anythingElse" placeholder="Don't hold back..."></textarea>
+    </div>
+
+    <hr class="divider">
+
+    <div class="field-group">
+      <label class="field-label">How did you hear about us?</label>
+      <input type="text" id="referral" placeholder="Referral, Instagram, Google, event...">
+    </div>
+  </div>
+
+  <!-- ══ SUMMARY / DONE ══ -->
+  <div class="section" data-step="6">
+    <div class="done-header">
+      <span class="done-mark">✦</span>
+      <p class="section-number">Brief Complete</p>
+      <h2 class="section-title">Your brief is <em>ready</em></h2>
+    </div>
+    <p class="section-desc">Here's a full summary of everything you've shared. Copy it and email it directly to us — or use the button below.</p>
+
+    <div class="summary-box" id="summaryOutput"></div>
+
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem;">
+      <button class="copy-btn" onclick="copyBrief()">⊞ Copy to clipboard</button>
+      <button class="copy-btn" style="border-color:var(--rust);color:var(--rust);" onclick="emailBrief()">✉ Open in email</button>
+    </div>
+
+    <div class="email-note">
+      <strong>What happens next:</strong><br>
+      Once we receive your brief we'll review it and come back within 24–48 hours with an initial direction and next steps. If anything needs clarification we'll reach out — otherwise, we'll get building.
+    </div>
+  </div>
+
+  <!-- NAV BUTTONS -->
+  <div class="nav-row" id="navRow">
+    <button class="btn btn-back" id="btnBack" onclick="navigate(-1)" style="visibility:hidden">← Back</button>
+    <button class="btn btn-next" id="btnNext" onclick="navigate(1)">Next →</button>
+  </div>
+
+</main>
+
+<script>
+const STEPS = [
+  { label: "Foundation" },
+  { label: "Brand Identity" },
+  { label: "Audience" },
+  { label: "Visual Direction" },
+  { label: "Goals" },
+  { label: "Final Notes" },
+  { label: "Summary" }
+];
+
+let current = 0;
+const data = {};
+
+// ── INIT ──
+function init() {
+  buildProgress();
+  updateProgress();
+
+  // Chip toggles
+  document.querySelectorAll('.chip-group').forEach(group => {
+    group.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        chip.classList.toggle('selected');
+      });
+    });
+  });
+
+  // Swatch toggles
+  document.querySelectorAll('.swatch').forEach(sw => {
+    sw.addEventListener('click', () => {
+      sw.classList.toggle('selected');
+    });
+  });
+
+  // Scale buttons
+  document.querySelectorAll('.scale-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.dataset.group;
+      document.querySelectorAll(`.scale-btn[data-group="${group}"]`).forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    });
+  });
+}
+
+function buildProgress() {
+  const bar = document.getElementById('progressBar');
+  bar.innerHTML = '';
+  STEPS.forEach((s, i) => {
+    if (i > 0) {
+      const sep = document.createElement('span');
+      sep.className = 'step-sep';
+      sep.textContent = '·';
+      bar.appendChild(sep);
+    }
+    const pill = document.createElement('span');
+    pill.className = 'step-pill';
+    pill.textContent = s.label;
+    pill.id = `pill-${i}`;
+    bar.appendChild(pill);
+  });
+}
+
+function updateProgress() {
+  STEPS.forEach((_, i) => {
+    const pill = document.getElementById(`pill-${i}`);
+    pill.className = 'step-pill';
+    if (i < current) pill.classList.add('done');
+    else if (i === current) pill.classList.add('active');
+    else pill.classList.add('pending');
+  });
+
+  document.getElementById('btnBack').style.visibility = current === 0 ? 'hidden' : 'visible';
+  const btnNext = document.getElementById('btnNext');
+  const navRow = document.getElementById('navRow');
+
+  if (current === STEPS.length - 1) {
+    navRow.style.display = 'none';
+  } else if (current === STEPS.length - 2) {
+    btnNext.textContent = 'Generate Brief →';
+    btnNext.className = 'btn btn-submit';
+  } else {
+    btnNext.textContent = 'Next →';
+    btnNext.className = 'btn btn-next';
+    navRow.style.display = 'flex';
+  }
+}
+
+function navigate(dir) {
+  if (dir === 1 && !validate()) return;
+
+  if (dir === 1) collectStep(current);
+
+  const sections = document.querySelectorAll('.section');
+  sections[current].classList.remove('active');
+  current = Math.max(0, Math.min(current + dir, STEPS.length - 1));
+  sections[current].classList.add('active');
+
+  if (current === STEPS.length - 1) {
+    buildSummary();
+    document.getElementById('navRow').style.display = 'none';
+  }
+
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function validate() {
+  if (current === 0) {
+    const name = document.getElementById('clientName').value.trim();
+    const email = document.getElementById('clientEmail').value.trim();
+    const biz = document.getElementById('businessName').value.trim();
+    if (!name || !email || !biz) {
+      alert('Please fill in your name, email and business name to continue.');
+      return false;
+    }
+    if (!email.includes('@')) {
+      alert('Please enter a valid email address.');
+      return false;
+    }
+  }
+  return true;
+}
+
+function collectStep(step) {
+  const getVal = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+  const getChips = id => [...document.querySelectorAll(`#${id} .chip.selected`)].map(c => c.dataset.val).join(', ');
+  const getSwatches = id => [...document.querySelectorAll(`#${id} .swatch.selected`)].map(s => s.dataset.val).join(', ');
+  const getScale = group => { const el = document.querySelector(`.scale-btn[data-group="${group}"].selected`); return el ? el.dataset.val + '/5' : 'Not specified'; };
+
+  if (step === 0) {
+    Object.assign(data, {
+      clientName: getVal('clientName'),
+      clientEmail: getVal('clientEmail'),
+      businessName: getVal('businessName'),
+      businessWhat: getVal('businessWhat'),
+      industry: getVal('industry')
+    });
+  } else if (step === 1) {
+    Object.assign(data, {
+      brandPersonality: getChips('brandPersonality'),
+      coreValues: getVal('coreValues'),
+      threeWords: getVal('threeWords'),
+      notWant: getVal('notWant')
+    });
+  } else if (step === 2) {
+    Object.assign(data, {
+      idealClient: getVal('idealClient'),
+      marketPosition: getScale('position'),
+      competitors: getVal('competitors'),
+      differentiator: getVal('differentiator')
+    });
+  } else if (step === 3) {
+    Object.assign(data, {
+      colorPalette: getSwatches('colorPalette'),
+      specificColors: getVal('specificColors'),
+      visualStyle: getChips('visualStyle'),
+      visualRefs: getVal('visualRefs')
+    });
+  } else if (step === 4) {
+    Object.assign(data, {
+      deliverables: getChips('deliverables'),
+      timeline: getVal('timeline'),
+      budget: getVal('budget'),
+      successLooks: getVal('successLooks')
+    });
+  } else if (step === 5) {
+    Object.assign(data, {
+      businessModel: getChips('businessModel'),
+      stage: getVal('stage'),
+      anythingElse: getVal('anythingElse'),
+      referral: getVal('referral')
+    });
+  }
+}
+
+function buildSummary() {
+  collectStep(5);
+  const line = (label, val) => val ? `${label.toUpperCase()}\n${val}\n\n` : '';
+
+  const brief = `╔══════════════════════════════════════════╗
+  BRAND DISCOVERY BRIEF
+  ${new Date().toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' })}
+╚══════════════════════════════════════════╝
+
+━━ 01. FOUNDATION ━━━━━━━━━━━━━━━━━━━━━━━
+
+${line('Client Name', data.clientName)}${line('Business / Project', data.businessName)}${line('Industry', data.industry)}${line('What the business does', data.businessWhat)}
+━━ 02. BRAND IDENTITY ━━━━━━━━━━━━━━━━━━
+
+${line('Personality traits', data.brandPersonality)}${line('Core values', data.coreValues)}${line('Brand in 3 words', data.threeWords)}${line('What we\'re NOT', data.notWant)}
+━━ 03. AUDIENCE ━━━━━━━━━━━━━━━━━━━━━━━━
+
+${line('Ideal client', data.idealClient)}${line('Market position', data.marketPosition)}${line('Competitors / Admired brands', data.competitors)}${line('Key differentiator', data.differentiator)}
+━━ 04. VISUAL DIRECTION ━━━━━━━━━━━━━━━━
+
+${line('Colour palette vibe', data.colorPalette)}${line('Specific colours', data.specificColors)}${line('Visual style', data.visualStyle)}${line('Visual references', data.visualRefs)}
+━━ 05. GOALS & DELIVERABLES ━━━━━━━━━━━━
+
+${line('Deliverables needed', data.deliverables)}${line('Timeline', data.timeline)}${line('Budget', data.budget)}${line('What success looks like', data.successLooks)}
+━━ 06. FINAL NOTES ━━━━━━━━━━━━━━━━━━━━
+
+${line('Business model', data.businessModel)}${line('Current stage', data.stage)}${line('Anything else', data.anythingElse)}${line('How they found us', data.referral)}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Contact: ${data.clientEmail}
+Generated via Brand Discovery Brief
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+
+  document.getElementById('summaryOutput').textContent = brief;
+  window._brief = brief;
+}
+
+function copyBrief() {
+  navigator.clipboard.writeText(window._brief || '')
+    .then(() => alert('Brief copied to clipboard! Now paste it into an email to us.'))
+    .catch(() => alert('Please manually select and copy the text above.'));
+}
+
+function emailBrief() {
+  const subject = encodeURIComponent(`Brand Discovery Brief — ${data.businessName || 'New Client'}`);
+  const body = encodeURIComponent(window._brief || '');
+  // CHANGE THIS EMAIL TO YOURS:
+  window.location.href = `mailto:hello@youragency.com?subject=${subject}&body=${body}`;
+}
+
+init();
+</script>
+</body>
+</html>
