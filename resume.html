@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stiaan du Plessis — Social Media Content Creator</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1612;
+    --paper: #f5f0e8;
+    --cream: #ede7d9;
+    --gold: #c8a96e;
+    --gold-light: #e8d5a8;
+    --rust: #b85c38;
+    --sage: #7a8c6e;
+  }
+
+  body {
+    font-family: 'DM Mono', monospace;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  .header {
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid var(--gold);
+  }
+
+  .header-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 300;
+    line-height: 1.1;
+  }
+
+  .header h1 em { font-style: italic; color: var(--rust); }
+
+  .contact-row {
+    margin-top: 1.2rem;
+    font-size: 0.72rem;
+    color: #6a5f50;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+  }
+
+  .contact-row a { color: var(--rust); text-decoration: none; }
+  .contact-row a:hover { text-decoration: underline; }
+
+  .main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+  }
+
+  .section { margin-bottom: 3rem; }
+
+  .section-number {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    font-weight: 300;
+    margin-bottom: 1rem;
+  }
+
+  .section-title em { font-style: italic; color: var(--rust); }
+
+  .lead {
+    font-size: 0.85rem;
+    color: #4a4136;
+    max-width: 620px;
+  }
+
+  .chip-group { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.8rem; }
+
+  .chip {
+    display: inline-block;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--gold-light);
+    border-radius: 20px;
+    font-size: 0.68rem;
+    background: transparent;
+    color: var(--ink);
+  }
+
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1.2rem;
+  }
+
+  .portfolio-card {
+    border: 1px solid var(--gold-light);
+    background: var(--cream);
+    padding: 1rem;
+    text-decoration: none;
+    color: var(--ink);
+    display: block;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .portfolio-card:hover { border-color: var(--rust); transform: translateY(-2px); }
+
+  .portfolio-card .label {
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+
+  .portfolio-card .title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+  }
+
+  .work-item { margin-bottom: 1.4rem; padding-left: 1rem; border-left: 2px solid var(--gold-light); }
+  .work-role { font-weight: 500; font-size: 0.78rem; }
+  .work-meta { font-size: 0.68rem; color: #8a7d6a; margin-bottom: 0.4rem; }
+  .work-desc { font-size: 0.74rem; color: #4a4136; }
+
+  .divider { border: none; border-top: 1px solid var(--gold-light); margin: 2.5rem 0; }
+
+  footer { text-align: center; font-size: 0.65rem; color: #a09280; padding-bottom: 3rem; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <p class="header-eyebrow">Social Media Content Creator — Application</p>
+  <h1>Stiaan <em>du Plessis</em></h1>
+  <div class="contact-row">
+    <span>📧 iamstiaan@gmail.com</span>
+    <span>📱 071 770 0072</span>
+    <span>📍 Johannesburg, South Africa</span>
+    <a href="https://www.linkedin.com/in/stiaan-du-plessis" target="_blank">LinkedIn</a>
+    <a href="https://github.com/iamstiaan" target="_blank">GitHub</a>
+  </div>
+</div>
+
+<main class="main">
+
+  <div class="section">
+    <p class="section-number">01 — Summary</p>
+    <h2 class="section-title">A self-directed <em>content builder</em></h2>
+    <p class="lead">
+      I create social-ready graphics and short-form video using Canva, and design and build
+      websites and brand collateral end to end. I work independently, manage my own time
+      and deadlines, and have produced content across fundraising campaigns, churches,
+      startups and small businesses — comfortable picking up a new brand and finding its
+      voice quickly. Outside client work, I'm building a community platform (Let Me Get It)
+      focused on referrals and engagement, which keeps me close to how content drives
+      real audience behaviour.
+    </p>
+  </div>
+
+  <div class="section">
+    <p class="section-number">02 — Skills</p>
+    <h2 class="section-title">What I <em>bring</em></h2>
+    <div class="chip-group">
+      <span class="chip">Canva (graphics & mobile video)</span>
+      <span class="chip">Short-form / reel-format video design</span>
+      <span class="chip">Social graphics & flyers</span>
+      <span class="chip">Brand & logo design</span>
+      <span class="chip">Web design & development</span>
+      <span class="chip">Presentation & pitch deck design</span>
+      <span class="chip">Content planning</span>
+      <span class="chip">Independent, remote work management</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <p class="section-number">03 — Portfolio</p>
+    <h2 class="section-title">Recent <em>work</em></h2>
+    <p class="lead">Live Canva designs and web builds — click through to view.</p>
+    <div class="portfolio-grid">
+      <a class="portfolio-card" href="https://www.canva.com/d/JMCr67yKDpevXSl" target="_blank">
+        <div class="label">Canva · Flyer</div>
+        <div class="title">Fundraising campaign flyer set</div>
+      </a>
+      <a class="portfolio-card" href="https://www.canva.com/d/sTSUJjvkXrEqAeF" target="_blank">
+        <div class="label">Canva · Mobile Video</div>
+        <div class="title">Vertical short-form video design</div>
+      </a>
+      <a class="portfolio-card" href="https://www.canva.com/d/-1xarlphXgcSNDk" target="_blank">
+        <div class="label">Canva · Mobile Video</div>
+        <div class="title">"Family Time" reel-format video</div>
+      </a>
+      <a class="portfolio-card" href="https://www.canva.com/d/FlFpxWtIMBZZtBt" target="_blank">
+        <div class="label">Canva · Infographic</div>
+        <div class="title">OMNISCOPE infographic series</div>
+      </a>
+      <a class="portfolio-card" href="https://www.canva.com/d/RAZ5q8ZsObhp3Yp" target="_blank">
+        <div class="label">Canva · Presentation</div>
+        <div class="title">40-page investor pitch deck</div>
+      </a>
+      <a class="portfolio-card" href="https://www.canva.com/d/ZuCjVc7lIMY6z6r" target="_blank">
+        <div class="label">Canva · Web mockup</div>
+        <div class="title">Software business website design</div>
+      </a>
+      <a class="portfolio-card" href="https://www.canva.com/d/bpKvQQq1HDFThZs" target="_blank">
+        <div class="label">Canva · Branding</div>
+        <div class="title">Logo & identity mark</div>
+      </a>
+      <a class="portfolio-card" href="https://github.com/911duplessis/PrimeTurf" target="_blank">
+        <div class="label">GitHub</div>
+        <div class="title">PrimeTurf — brand site build</div>
+      </a>
+      <a class="portfolio-card" href="https://github.com/911duplessis/SAPS-Police-Clearance-" target="_blank">
+        <div class="label">GitHub</div>
+        <div class="title">SAPS Police Clearance — service site</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <p class="section-number">04 — Experience</p>
+    <h2 class="section-title">Background</h2>
+
+    <div class="work-item">
+      <div class="work-role">Freelance Digital Designer & Web Builder</div>
+      <div class="work-meta">Self-employed — ongoing</div>
+      <div class="work-desc">Design and build brand websites, social graphics, presentations and marketing
+        collateral for small businesses, churches and community organisations using Canva and
+        modern web tooling.</div>
+    </div>
+
+    <div class="work-item">
+      <div class="work-role">Founder — Let Me Get It</div>
+      <div class="work-meta">Personal project — ongoing</div>
+      <div class="work-desc">Building a community recommendation platform connecting people who need a
+        product or service with trusted referrals — hands-on experience with what drives engagement
+        and trust online.</div>
+    </div>
+
+    <div class="work-item">
+      <div class="work-role">General Manager, Hospitality</div>
+      <div class="work-meta">6 years</div>
+      <div class="work-desc">Ran day-to-day operations and brand-facing service delivery, managing
+        my own schedule and team accountability — the same independence and reliability this
+        remote role needs.</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <footer>Stiaan du Plessis · iamstiaan@gmail.com · 071 770 0072</footer>
+
+</main>
+</body>
+</html>
