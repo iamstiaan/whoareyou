@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stiaan du Plessis — Social Media Content Creator Application</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  @page { size: A4; margin: 10mm 12mm; }
+
+  :root {
+    --ink: #1a1612;
+    --paper: #f5f0e8;
+    --cream: #ede7d9;
+    --gold: #c8a96e;
+    --gold-light: #e8d5a8;
+    --rust: #b85c38;
+    --green: #2d5a27;
+  }
+
+  body {
+    font-family: 'DM Mono', monospace;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.3;
+    font-size: 9.3pt;
+  }
+
+  .page {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 16px 22px;
+  }
+
+  .top {
+    display: grid;
+    grid-template-columns: 92px 1fr auto;
+    gap: 16px;
+    align-items: center;
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+  }
+
+  .top img {
+    width: 92px;
+    height: 92px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+  }
+
+  .top h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 26pt;
+    line-height: 1;
+  }
+
+  .top .role {
+    font-size: 9.5pt;
+    color: var(--rust);
+    margin-top: 2px;
+    letter-spacing: 0.02em;
+  }
+
+  .contact-block {
+    text-align: right;
+    font-size: 7.6pt;
+    color: #4a4136;
+    line-height: 1.6;
+  }
+  .contact-block a { color: var(--rust); text-decoration: none; }
+
+  .hook {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14pt;
+    font-style: italic;
+    color: var(--green);
+    margin-bottom: 6px;
+    line-height: 1.25;
+  }
+
+  .pitch {
+    font-size: 8.6pt;
+    color: #4a4136;
+    margin-bottom: 12px;
+    max-width: 880px;
+  }
+
+  .section-label {
+    font-size: 7.4pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 5px;
+    margin-top: 10px;
+    border-bottom: 1px solid var(--gold-light);
+    padding-bottom: 2px;
+  }
+
+  .proof-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .proof-card {
+    background: var(--cream);
+    border: 1px solid var(--gold-light);
+    overflow: hidden;
+  }
+  .proof-card img {
+    width: 100%;
+    height: 90px;
+    object-fit: cover;
+    display: block;
+  }
+  .proof-card .cap {
+    padding: 5px 6px;
+    font-size: 6.8pt;
+    color: #4a4136;
+  }
+  .proof-card .cap b { color: var(--ink); display: block; font-size: 7.2pt; margin-bottom: 1px; }
+  .proof-card.video {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10px 8px;
+    text-decoration: none;
+    color: var(--ink);
+    height: 90px;
+  }
+  .proof-card.video .play {
+    font-size: 18pt;
+    color: var(--rust);
+    line-height: 1;
+  }
+  .proof-card.video .cap { padding: 4px 0 0; }
+
+  .stats-band {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 10px 0;
+    background: var(--green);
+    color: var(--cream);
+    padding: 10px 6px;
+  }
+  .stat { text-align: center; padding: 0 4px; }
+  .stat .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15pt;
+    color: var(--gold-light);
+    font-weight: 600;
+    line-height: 1.1;
+  }
+  .stat .lbl { font-size: 6.6pt; letter-spacing: 0.02em; margin-top: 2px; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 18px;
+  }
+
+  .chip-group { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
+  .chip {
+    border: 1px solid var(--gold-light);
+    border-radius: 14px;
+    padding: 2.5px 8px;
+    font-size: 7.2pt;
+    background: var(--cream);
+  }
+
+  .role-item { margin-bottom: 7px; }
+  .role-item .role-title { font-weight: 500; font-size: 8.1pt; }
+  .role-item .role-meta { font-size: 6.8pt; color: #8a7d6a; }
+  .role-item .role-desc { font-size: 7.4pt; color: #4a4136; margin-top: 1px; }
+
+  .closing {
+    margin-top: 12px;
+    border-top: 1px solid var(--gold);
+    padding-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 14px;
+  }
+  .closing .line {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12pt;
+    color: var(--rust);
+    max-width: 620px;
+  }
+  .closing .sign {
+    font-size: 7.6pt;
+    color: #4a4136;
+    text-align: right;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="top">
+    <img src="assets/stiaan-headshot.png" alt="Stiaan du Plessis">
+    <div>
+      <h1>Stiaan du Plessis</h1>
+      <div class="role">Application — Social Media Content Creator</div>
+    </div>
+    <div class="contact-block">
+      iamstiaan@gmail.com<br>
+      071 770 0072 · Johannesburg, SA<br>
+      <a href="https://www.linkedin.com/in/stiaan-du-plessis">linkedin.com/in/stiaan-du-plessis</a> ·
+      <a href="https://github.com/iamstiaan">github.com/iamstiaan</a>
+    </div>
+  </div>
+
+  <p class="hook">"The feeling when a neighbour slows down." — that's the kind of before/after moment I build content around, and exactly the reaction your construction and home-improvement clients want from every post.</p>
+
+  <p class="pitch">
+    I make people stop scrolling at a transformation. Below isn't a portfolio of ideas — it's real before/after
+    photography, a real published social ad, a real short-form video reel, and a real website, all built and
+    shipped by me for an outdoor-transformation brand. I plan content, shoot and edit it in Canva, design the
+    graphics, and build the web presence that holds it together — independently, on deadline, with no hand-holding.
+    That's the exact mix a remote, multi-client social role needs.
+  </p>
+
+  <div class="section-label">Proof, Not Promises</div>
+  <div class="proof-grid">
+    <div class="proof-card">
+      <img src="assets/primeturf-before.webp" alt="Before">
+      <div class="cap"><b>Before</b>Bare entrance, real client site</div>
+    </div>
+    <div class="proof-card">
+      <img src="assets/primeturf-after.webp" alt="After">
+      <div class="cap"><b>After</b>Finished turf transformation</div>
+    </div>
+    <div class="proof-card">
+      <img src="assets/primeturf-social-ad.jpg" alt="Social ad">
+      <div class="cap"><b>Published Ad</b>Before/after campaign post, live</div>
+    </div>
+    <a class="proof-card video" href="https://drive.google.com/file/d/1MlAVgfIGC417pRQPUDogeGJxateERSyK/view?usp=drivesdk" target="_blank">
+      <div class="play">&#9658;</div>
+      <div class="cap"><b>Video Reel</b>"Get Dave's Lawn" — short-form ad</div>
+    </a>
+  </div>
+
+  <div class="stats-band">
+    <div class="stat"><div class="num">R1.5M&rarr;R18M</div><div class="lbl">Property value growth I helped drive through rebrand &amp; marketing</div></div>
+    <div class="stat"><div class="num">6 yrs</div><div class="lbl">Leading a brand rebuild, events &amp; promotion solo</div></div>
+    <div class="stat"><div class="num">2014</div><div class="lbl">NLP Practitioner, NLP World UK — reading an audience</div></div>
+    <div class="stat"><div class="num">5+</div><div class="lbl">Live brand &amp; web builds shipped end-to-end</div></div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="section-label">Background</div>
+      <div class="role-item">
+        <div class="role-title">Freelance Digital Designer &amp; Web Builder</div>
+        <div class="role-meta">Self-employed — ongoing</div>
+        <div class="role-desc">Social graphics, reels, presentations and full brand websites for small businesses, churches and community organisations — Canva to code.</div>
+      </div>
+      <div class="role-item">
+        <div class="role-title">General Manager — Buffalo Hotel, Hectorspruit</div>
+        <div class="role-meta">6 years</div>
+        <div class="role-desc">Personally ran the rebrand, events (Kissing the Buffalo Bar nights, Sunday buffets, Annual Buffalo Festival, MTB racing), marketing and graphic design that grew the property from R1.5m to R18m.</div>
+      </div>
+      <div class="role-item">
+        <div class="role-title">Founder — Let Me Get It &amp; InsightForge</div>
+        <div class="role-meta">Personal projects — ongoing / in development</div>
+        <div class="role-desc">A community referral platform and an AI-powered business discovery tool — both built solo, both about understanding what makes people engage.</div>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">What I Bring</div>
+      <div class="chip-group">
+        <span class="chip">Canva (graphics &amp; mobile video)</span>
+        <span class="chip">Short-form / reel editing</span>
+        <span class="chip">Before/after campaign content</span>
+        <span class="chip">Brand &amp; logo design</span>
+        <span class="chip">Web design &amp; development</span>
+        <span class="chip">Content planning</span>
+        <span class="chip">NLP Practitioner — audience insight</span>
+        <span class="chip">Independent remote delivery</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="closing">
+    <p class="line">Whatever your construction and home-improvement clients need to see on their feed — I'll plan it, shoot it, design it, and ship it.</p>
+    <div class="sign">Stiaan du Plessis<br>iamstiaan@gmail.com · 071 770 0072</div>
+  </div>
+
+</div>
+</body>
+</html>
